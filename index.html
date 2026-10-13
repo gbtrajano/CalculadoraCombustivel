@@ -12,61 +12,197 @@
 
         <!-- Google Fonts -->
         <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
             rel="stylesheet"
         />
 
         <style>
+            :root {
+                --black: #0a0a0a;
+                --white: #ffffff;
+            }
+
             body {
-                font-family: "Poppins", sans-serif;
+                font-family: "Inter", sans-serif;
+                background-color: var(--black);
+                background-image:
+                    radial-gradient(
+                        circle at 15% 10%,
+                        rgba(255, 255, 255, 0.07),
+                        transparent 45%
+                    ),
+                    radial-gradient(
+                        circle at 85% 90%,
+                        rgba(255, 255, 255, 0.05),
+                        transparent 45%
+                    ),
+                    linear-gradient(
+                        rgba(255, 255, 255, 0.035) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(255, 255, 255, 0.035) 1px,
+                        transparent 1px
+                    );
+                background-size:
+                    100% 100%,
+                    100% 100%,
+                    48px 48px,
+                    48px 48px;
             }
-            .result-card {
-                animation: fadeIn 0.4s ease-out forwards;
+
+            .font-display {
+                font-family: "Space Grotesk", sans-serif;
             }
-            @keyframes fadeIn {
+
+            /* Entrada animada dos cards */
+            .fade-up {
+                animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+            }
+            .fade-up-delay {
+                animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.12s
+                    both;
+            }
+            @keyframes fadeUp {
                 from {
                     opacity: 0;
-                    transform: translateY(20px);
+                    transform: translateY(24px);
                 }
                 to {
                     opacity: 1;
                     transform: translateY(0);
                 }
             }
+
+            /* Toggle "Ida e Volta" */
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 56px;
+                height: 32px;
+                flex-shrink: 0;
+            }
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            .switch .slider {
+                position: absolute;
+                inset: 0;
+                background: #e5e5e5;
+                border: 1px solid #d4d4d4;
+                border-radius: 999px;
+                cursor: pointer;
+                transition:
+                    background 0.25s ease,
+                    border-color 0.25s ease;
+            }
+            .switch .slider::before {
+                content: "";
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                left: 3px;
+                top: 3px;
+                background: #fff;
+                border-radius: 50%;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+                transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .switch input:checked + .slider {
+                background: var(--black);
+                border-color: var(--black);
+            }
+            .switch input:checked + .slider::before {
+                transform: translateX(24px);
+            }
+            .switch input:focus-visible + .slider {
+                outline: 2px solid var(--black);
+                outline-offset: 3px;
+            }
+
+            /* Campos de entrada */
+            .field {
+                transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+            }
+            .field:hover {
+                border-color: #a3a3a3;
+            }
+            .field:focus {
+                outline: none;
+                border-color: var(--black);
+                box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.08);
+            }
+            .field::placeholder {
+                color: #d4d4d4;
+            }
+
+            .btn-press {
+                transition:
+                    transform 0.12s ease,
+                    background 0.2s ease,
+                    border-color 0.2s ease,
+                    color 0.2s ease;
+            }
+            .btn-press:active {
+                transform: scale(0.97);
+            }
         </style>
     </head>
-    <body
-        class="bg-gradient-to-br from-emerald-50 to-teal-100 min-h-screen py-12 px-4"
-    >
-        <div class="max-w-lg mx-auto">
+
+    <body class="min-h-screen py-12 px-4 text-white antialiased">
+        <div class="max-w-xl mx-auto">
             <!-- Cabeçalho -->
-            <div class="text-center mb-10">
-                <h1 class="text-4xl font-bold text-gray-800">
-                    Calculadora de Combustível
+            <header class="text-center mb-10 fade-up">
+                <span
+                    class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] font-semibold text-white/60 border border-white/20 rounded-full px-4 py-1.5 mb-6"
+                >
+                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    Estimativa de custo
+                </span>
+
+                <h1
+                    class="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white leading-[1.1]"
+                >
+                    Calculadora de<br />Combustível
                 </h1>
-                <p class="text-gray-600 mt-2">
+
+                <p class="text-white/50 mt-4 text-base sm:text-lg">
                     Descubra quanto vai gastar na sua viagem
                 </p>
-            </div>
+            </header>
 
             <!-- Card Principal -->
-            <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-10">
-                <div class="space-y-8">
+            <section
+                class="bg-white text-neutral-900 rounded-[2rem] p-7 sm:p-10 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)] fade-up-delay"
+            >
+                <form class="space-y-7" onsubmit="return false;">
                     <!-- Distância -->
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 mb-2"
-                            >Distância da viagem</label
+                            for="distance"
+                            class="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-neutral-500 mb-3"
                         >
+                            <span
+                                class="w-6 h-6 rounded-full border border-neutral-300 text-neutral-500 text-[10px] font-semibold flex items-center justify-center"
+                                >01</span
+                            >
+                            Distância da viagem
+                        </label>
                         <div class="relative">
                             <input
                                 type="text"
+                                inputmode="decimal"
                                 id="distance"
                                 placeholder="0"
-                                class="w-full px-6 py-5 text-3xl font-medium border-2 border-gray-200 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all"
+                                class="field w-full px-5 sm:px-6 py-4 sm:py-5 pr-20 text-2xl sm:text-3xl font-semibold bg-white border-2 border-neutral-200 rounded-2xl"
                             />
                             <span
-                                class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xl"
+                                class="absolute right-6 top-1/2 -translate-y-1/2 text-neutral-400 font-semibold text-lg pointer-events-none"
                                 >km</span
                             >
                         </div>
@@ -74,146 +210,211 @@
 
                     <!-- Ida e Volta -->
                     <div
-                        class="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl"
+                        class="flex items-center justify-between gap-4 bg-neutral-100 border border-neutral-200 p-4 sm:p-5 rounded-2xl"
                     >
-                        <input
-                            type="checkbox"
-                            id="roundTrip"
-                            class="w-6 h-6 accent-emerald-600 cursor-pointer"
-                        />
-                        <label
-                            for="roundTrip"
-                            class="text-lg font-medium text-gray-700 cursor-pointer select-none"
-                        >
-                            Ida e Volta
+                        <div class="flex items-center gap-3">
+                            <label
+                                for="roundTrip"
+                                class="text-base sm:text-lg font-semibold text-neutral-800 cursor-pointer select-none"
+                            >
+                                Ida e volta
+                            </label>
+                            <span
+                                class="hidden sm:inline text-xs text-neutral-500"
+                                >multiplica a distância por 2</span
+                            >
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="roundTrip" />
+                            <span class="slider"></span>
                         </label>
                     </div>
 
-                    <!-- Consumo do Veículo -->
+                    <!-- Consumo -->
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 mb-2"
-                            >Consumo médio do veículo</label
+                            for="consumption"
+                            class="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-neutral-500 mb-3"
                         >
+                            <span
+                                class="w-6 h-6 rounded-full border border-neutral-300 text-neutral-500 text-[10px] font-semibold flex items-center justify-center"
+                                >02</span
+                            >
+                            Consumo médio do veículo
+                        </label>
                         <div class="relative">
                             <input
                                 type="text"
+                                inputmode="decimal"
                                 id="consumption"
                                 step="0.1"
-                                placeholder="0.0"
-                                class="w-full px-6 py-5 text-3xl font-medium border-2 border-gray-200 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all"
+                                placeholder="0,0"
+                                class="field w-full px-5 sm:px-6 py-4 sm:py-5 pr-24 text-2xl sm:text-3xl font-semibold bg-white border-2 border-neutral-200 rounded-2xl"
                             />
                             <span
-                                class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xl"
+                                class="absolute right-6 top-1/2 -translate-y-1/2 text-neutral-400 font-semibold text-lg pointer-events-none"
                                 >km/L</span
                             >
                         </div>
                     </div>
 
-                    <!-- Preço da Gasolina - CORRIGIDO -->
+                    <!-- Preço -->
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 mb-2"
-                            >Preço atual da gasolina</label
+                            for="price"
+                            class="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-neutral-500 mb-3"
                         >
+                            <span
+                                class="w-6 h-6 rounded-full border border-neutral-300 text-neutral-500 text-[10px] font-semibold flex items-center justify-center"
+                                >03</span
+                            >
+                            Preço atual da gasolina
+                        </label>
                         <div class="relative">
                             <div
-                                class="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-medium text-gray-500 pointer-events-none"
+                                class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl sm:text-3xl font-semibold text-neutral-400 pointer-events-none"
                             >
                                 R$
                             </div>
                             <input
                                 type="text"
+                                inputmode="decimal"
                                 id="price"
                                 placeholder="0,00"
                                 maxlength="10"
-                                class="w-full pl-16 pr-6 py-5 text-3xl font-medium border-2 border-gray-200 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all"
+                                class="field w-full pl-16 sm:pl-20 pr-6 py-4 sm:py-5 text-2xl sm:text-3xl font-semibold bg-white border-2 border-neutral-200 rounded-2xl"
                             />
                         </div>
                     </div>
-                </div>
 
-                <!-- Botões -->
-                <div class="grid grid-cols-2 gap-4 mt-10">
-                    <button
-                        onclick="calculateFuel()"
-                        class="bg-emerald-600 hover:bg-emerald-700 transition-all text-white font-semibold text-xl py-6 rounded-2xl shadow-lg active:scale-95"
+                    <!-- Erro -->
+                    <div
+                        id="error"
+                        class="hidden bg-neutral-900 text-white rounded-2xl px-5 py-4 text-sm font-medium items-center gap-3"
                     >
-                        Calcular
-                    </button>
+                        <span
+                            class="w-5 h-5 rounded-full border border-white/60 text-white text-[11px] font-bold flex items-center justify-center flex-shrink-0"
+                            >!</span
+                        >
+                        <span id="errorMessage"
+                            >Por favor, preencha todos os campos
+                            corretamente.</span
+                        >
+                    </div>
 
-                    <button
-                        onclick="resetForm()"
-                        class="bg-gray-100 hover:bg-gray-200 transition-all text-gray-700 font-semibold text-xl py-6 rounded-2xl"
-                    >
-                        Limpar
-                    </button>
-                </div>
-            </div>
+                    <!-- Botões -->
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <button
+                            type="button"
+                            onclick="calculateFuel()"
+                            class="btn-press bg-neutral-900 hover:bg-neutral-700 text-white font-semibold text-lg py-5 rounded-2xl shadow-lg"
+                        >
+                            Calcular
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="resetForm()"
+                            class="btn-press bg-white border-2 border-neutral-200 hover:border-neutral-900 text-neutral-700 hover:text-neutral-900 font-semibold text-lg py-5 rounded-2xl"
+                        >
+                            Limpar
+                        </button>
+                    </div>
+                </form>
+            </section>
 
             <!-- Área de Resultado -->
-            <div
+            <section
                 id="result"
-                class="hidden mt-8 result-card bg-white rounded-3xl shadow-2xl p-8 md:p-10"
+                class="hidden mt-6 fade-up bg-white text-neutral-900 rounded-[2rem] p-7 sm:p-10 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)]"
             >
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        Resultado da Viagem
-                    </h2>
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <p
+                            class="text-[11px] uppercase tracking-[0.18em] font-bold text-neutral-400 mb-2"
+                        >
+                            Resumo
+                        </p>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold">
+                            Resultado da viagem
+                        </h2>
+                    </div>
                     <button
                         onclick="closeResult()"
-                        class="text-3xl text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Fechar resultado"
+                        class="btn-press w-10 h-10 rounded-full border-2 border-neutral-200 hover:border-neutral-900 text-neutral-500 hover:text-neutral-900 text-xl leading-none flex items-center justify-center"
                     >
                         ✕
                     </button>
                 </div>
 
-                <div class="space-y-6">
+                <div class="space-y-3">
                     <div
-                        class="flex justify-between items-center py-4 border-b"
+                        class="flex justify-between items-center gap-4 bg-neutral-100 rounded-2xl px-5 py-4"
                     >
-                        <span class="text-gray-600 text-lg"
+                        <span class="text-neutral-500 text-sm font-medium"
                             >Distância total</span
                         >
                         <span
                             id="totalDistance"
-                            class="text-2xl font-semibold text-gray-800"
+                            class="text-xl font-semibold text-neutral-900"
                         ></span>
                     </div>
 
                     <div
-                        class="flex justify-between items-center py-4 border-b"
+                        class="flex justify-between items-center gap-4 bg-neutral-100 rounded-2xl px-5 py-4"
                     >
-                        <span class="text-gray-600 text-lg"
+                        <span class="text-neutral-500 text-sm font-medium"
                             >Litros necessários</span
                         >
                         <span
                             id="liters"
-                            class="text-2xl font-semibold text-gray-800"
+                            class="text-xl font-semibold text-neutral-900"
                         ></span>
                     </div>
 
                     <div
-                        class="flex justify-between items-center py-4 border-b"
+                        class="flex justify-between items-center gap-4 bg-neutral-900 text-white rounded-2xl px-5 py-5 mt-4"
                     >
-                        <span class="text-gray-600 text-lg">Valor total</span>
+                        <span class="text-white/60 text-sm font-medium"
+                            >Valor total</span
+                        >
                         <span
                             id="totalCost"
-                            class="text-3xl font-bold text-emerald-600"
+                            class="text-3xl font-bold font-display tracking-tight"
                         ></span>
                     </div>
                 </div>
 
-                <div class="mt-10 text-center">
-                    <p class="text-sm text-gray-500">
-                        Estimativa baseada nos dados informados
-                    </p>
-                </div>
-            </div>
+                <p class="mt-7 text-center text-xs text-neutral-400">
+                    Estimativa baseada nos dados informados
+                </p>
+            </section>
+
+            <footer class="mt-10 text-center">
+                <p class="text-white/30 text-xs tracking-wide">
+                    Feito para planejar sua viagem com precisão
+                </p>
+            </footer>
         </div>
 
         <script>
+            const errorBox = document.getElementById("error");
+
+            function showError(message) {
+                document.getElementById("errorMessage").textContent = message;
+                errorBox.classList.remove("hidden");
+                errorBox.classList.add("flex");
+            }
+
+            function hideError() {
+                errorBox.classList.add("hidden");
+                errorBox.classList.remove("flex");
+            }
+
             function calculateFuel() {
+                hideError();
+
                 const distance = parseFloat(
                     document.getElementById("distance").value,
                 );
@@ -236,7 +437,9 @@
                     price <= 0 ||
                     consumption <= 0
                 ) {
-                    alert("Por favor, preencha todos os campos corretamente.");
+                    showError(
+                        "Por favor, preencha todos os campos corretamente.",
+                    );
                     return;
                 }
 
@@ -251,18 +454,19 @@
                 document.getElementById("totalCost").textContent =
                     `R$ ${totalCost.toFixed(2)}`;
 
-                document.getElementById("result").classList.remove("hidden");
-                document
-                    .getElementById("result")
-                    .scrollIntoView({ behavior: "smooth" });
+                const result = document.getElementById("result");
+                result.classList.remove("hidden");
+                result.scrollIntoView({ behavior: "smooth", block: "center" });
             }
 
             function resetForm() {
+                hideError();
                 document.getElementById("distance").value = "";
                 document.getElementById("consumption").value = "";
                 document.getElementById("price").value = "";
                 document.getElementById("roundTrip").checked = false;
                 document.getElementById("result").classList.add("hidden");
+                document.getElementById("distance").focus();
             }
 
             function closeResult() {
@@ -285,6 +489,13 @@
                         e.target.value = "";
                     }
                 });
+
+            // Esconde o erro ao digitar em qualquer campo
+            ["distance", "consumption", "price"].forEach((id) => {
+                document
+                    .getElementById(id)
+                    .addEventListener("input", hideError);
+            });
 
             // Calcular com Enter
             document.addEventListener("keypress", function (e) {
